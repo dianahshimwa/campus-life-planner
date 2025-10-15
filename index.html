@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Life Planner</title>
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+      <div class="container">
+        <h1>Campus Life Planner</h1>
+        <p class="subtitle">Organize your tasks, events, and campus activities</p>
+      </div>
+    </header>
+
+    <nav aria-label="Main navigation">
+      <div class="container">
+        <ul class="nav-list">
+          <li><button type="button" class="nav-btn active" data-page="dashboard">Dashboard</button></li>
+          <li><button type="button" class="nav-btn" data-page="tasks">Tasks</button></li>
+          <li><button type="button" class="nav-btn" data-page="add">Add Task</button></li>
+          <li><button type="button" class="nav-btn" data-page="settings">Settings</button></li>
+          <li><button type="button" class="nav-btn" data-page="about">About</button></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main id="main-content">
+      <div class="container">
+
+        <section id="page-dashboard" class="page active" aria-labelledby="dashboard-heading">
+          <h2 id="dashboard-heading">Dashboard</h2>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Tasks</h3>
+              <p class="stat-value" id="stat-total">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Total Hours</h3>
+              <p class="stat-value" id="stat-hours">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Top Tag</h3>
+              <p class="stat-value" id="stat-tag">None</p>
+            </div>
+            <div class="stat-card">
+              <h3>Last 7 Days</h3>
+              <p class="stat-value" id="stat-recent">0</p>
+            </div>
+          </div>
+
+          <div class="cap-section">
+            <h3>Weekly Time Cap</h3>
+            <div class="cap-bar-container">
+              <div class="cap-bar" id="cap-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+            </div>
+            <p class="cap-info">
+              <span id="cap-current">0</span> / <span id="cap-target">40</span> hours
+            </p>
+            <div role="status" aria-live="polite" aria-atomic="true" class="cap-message" id="cap-message"></div>
+          </div>
+
+          <div class="chart-container">
+            <h3>Recent Activity</h3>
+            <div class="simple-chart" id="activity-chart"></div>
+          </div>
+        </section>
+
+        <section id="page-tasks" class="page" aria-labelledby="tasks-heading">
+          <h2 id="tasks-heading">All Tasks</h2>
+
+          <div class="search-controls">
+            <div class="search-box">
+              <label for="search-input">Search (Regex)</label>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Enter search pattern (e.g., study|homework)"
+                aria-describedby="search-help"
+              />
+              <div class="search-options">
+                <label>
+                  <input type="checkbox" id="search-case" />
+                  Case sensitive
+                </label>
+              </div>
+              <div role="status" aria-live="polite" class="search-status" id="search-status"></div>
+              <p id="search-help" class="help-text">Use regex patterns to search. Examples: ^@homework, \d{2}:\d{2}, (study|review)</p>
+            </div>
+
+            <div class="sort-controls">
+              <label for="sort-select">Sort by</label>
+              <select id="sort-select">
+                <option value="date-desc">Date (newest first)</option>
+                <option value="date-asc">Date (oldest first)</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="title-desc">Title (Z-A)</option>
+                <option value="duration-desc">Duration (high-low)</option>
+                <option value="duration-asc">Duration (low-high)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table id="tasks-table" class="tasks-table">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Tag</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tasks-tbody">
+                <tr>
+                  <td colspan="5" class="empty-state">No tasks yet. Add your first task to get started!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mobile-cards" id="mobile-cards"></div>
+        </section>
+
+        <section id="page-add" class="page" aria-labelledby="add-heading">
+          <h2 id="add-heading">Add Task</h2>
+
+          <form id="task-form" class="task-form" novalidate>
+            <input type="hidden" id="task-id" />
+
+            <div class="form-group">
+              <label for="task-title">
+                Title <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="task-title"
+                required
+                aria-required="true"
+                aria-describedby="title-error title-help"
+              />
+              <p id="title-help" class="help-text">No leading/trailing spaces, no double spaces</p>
+              <div role="alert" class="error-message" id="title-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="task-date">
+                Due Date <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="task-date"
+                placeholder="YYYY-MM-DD"
+                required
+                aria-required="true"
+                aria-describedby="date-error date-help"
+              />
+              <p id="date-help" class="help-text">Format: YYYY-MM-DD (e.g., 2025-10-15)</p>
+              <div role="alert" class="error-message" id="date-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="task-duration">
+                Duration (minutes) <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="task-duration"
+                placeholder="60"
+                required
+                aria-required="true"
+                aria-describedby="duration-error duration-help"
+              />
+              <p id="duration-help" class="help-text">Whole number or decimal (e.g., 90 or 90.5)</p>
+              <div role="alert" class="error-message" id="duration-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="task-tag">
+                Tag <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="task-tag"
+                placeholder="homework"
+                list="tag-suggestions"
+                required
+                aria-required="true"
+                aria-describedby="tag-error tag-help"
+              />
+              <datalist id="tag-suggestions">
+                <option value="homework">
+                <option value="study">
+                <option value="project">
+                <option value="exam">
+                <option value="meeting">
+                <option value="club">
+                <option value="sports">
+                <option value="social">
+              </datalist>
+              <p id="tag-help" class="help-text">Letters, spaces, and hyphens only (e.g., homework, group-project)</p>
+              <div role="alert" class="error-message" id="tag-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="task-notes">
+                Notes (optional)
+              </label>
+              <textarea
+                id="task-notes"
+                rows="3"
+                aria-describedby="notes-help"
+              ></textarea>
+              <p id="notes-help" class="help-text">Additional details about the task</p>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <span id="form-submit-text">Add Task</span>
+              </button>
+              <button type="button" class="btn btn-secondary" id="cancel-edit">Cancel</button>
+            </div>
+
+            <div role="status" aria-live="polite" class="form-status" id="form-status"></div>
+          </form>
+        </section>
+
+        <section id="page-settings" class="page" aria-labelledby="settings-heading">
+          <h2 id="settings-heading">Settings</h2>
+
+          <div class="settings-section">
+            <h3>Time Units</h3>
+            <div class="form-group">
+              <label for="time-unit">Default display unit</label>
+              <select id="time-unit">
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="weekly-cap">Weekly time cap (hours)</label>
+              <input
+                type="number"
+                id="weekly-cap"
+                min="1"
+                max="168"
+                value="40"
+              />
+              <p class="help-text">Set your weekly time budget goal (1-168 hours)</p>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Data Management</h3>
+            <div class="data-actions">
+              <button type="button" class="btn btn-secondary" id="export-json">
+                Export Data (JSON)
+              </button>
+              <div class="import-wrapper">
+                <label for="import-file" class="btn btn-secondary">
+                  Import Data (JSON)
+                </label>
+                <input
+                  type="file"
+                  id="import-file"
+                  accept=".json"
+                  class="file-input"
+                />
+              </div>
+              <button type="button" class="btn btn-danger" id="clear-data">
+                Clear All Data
+              </button>
+            </div>
+            <div role="status" aria-live="polite" class="settings-status" id="settings-status"></div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Appearance</h3>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="reduce-motion" />
+                Reduce animations
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-about" class="page" aria-labelledby="about-heading">
+          <h2 id="about-heading">About Campus Life Planner</h2>
+
+          <div class="about-content">
+            <p>
+              Campus Life Planner is a comprehensive task and event management tool designed
+              for students to organize their academic and extracurricular activities effectively.
+            </p>
+
+            <h3>Features</h3>
+            <ul>
+              <li>Track tasks with due dates, durations, and tags</li>
+              <li>Powerful regex search functionality</li>
+              <li>Sort and filter your tasks</li>
+              <li>Visual dashboard with statistics</li>
+              <li>Weekly time cap monitoring</li>
+              <li>Import/export your data</li>
+              <li>Fully accessible and keyboard-navigable</li>
+              <li>Responsive design for mobile and desktop</li>
+            </ul>
+
+            <h3>Keyboard Shortcuts</h3>
+            <dl class="keyboard-map">
+              <dt>Tab / Shift+Tab</dt>
+              <dd>Navigate between elements</dd>
+
+              <dt>Enter / Space</dt>
+              <dd>Activate buttons and links</dd>
+
+              <dt>Escape</dt>
+              <dd>Cancel edit mode</dd>
+            </dl>
+
+            <h3>Regex Search Examples</h3>
+            <dl class="regex-examples">
+              <dt><code>^@homework</code></dt>
+              <dd>Tasks starting with @homework</dd>
+
+              <dt><code>study|review</code></dt>
+              <dd>Tasks containing "study" OR "review"</dd>
+
+              <dt><code>\d{2}:\d{2}</code></dt>
+              <dd>Tasks with time patterns (e.g., 14:30)</dd>
+
+              <dt><code>\b(\w+)\s+\1\b</code></dt>
+              <dd>Detect duplicate words (advanced back-reference)</dd>
+
+              <dt><code>(?=.*exam)(?=.*math)</code></dt>
+              <dd>Tasks containing both "exam" AND "math" (lookahead)</dd>
+            </dl>
+
+            <h3>Contact</h3>
+            <p>
+              Created by: Dianah Shimwa Gasasira<br>
+              Email: <a href="d.shimwa@alustudent.com">d.shimwa@alustudent.com</a><br>
+              GitHub: <a href="https://github.com/dianahshimwa" target="_blank" rel="noopener noreferrer">github.com/dianahshimwa</a>
+            </p>
+
+            <h3>Accessibility</h3>
+            <p>
+              This application is built with accessibility in mind, featuring semantic HTML,
+              ARIA landmarks and live regions, keyboard navigation support, and proper color contrast.
+              If you encounter any accessibility issues, please contact us.
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 Campus Life Planner. Built for students, by students.</p>
+      </div>
+    </footer>
+
+    <div role="status" aria-live="assertive" aria-atomic="true" class="sr-only" id="alert-region"></div>
+
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>
