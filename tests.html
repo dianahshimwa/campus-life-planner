@@ -134,143 +134,131 @@
       }
     }
 
+    // Title validation tests
     test('Title: Valid title passes', () => {
       const result = validators.title.validate('Study for exam');
       assert(result.valid, 'Valid title should pass');
     });
-
     test('Title: Leading space fails', () => {
       const result = validators.title.validate(' Study for exam');
       assert(!result.valid, 'Title with leading space should fail');
     });
-
     test('Title: Trailing space fails', () => {
       const result = validators.title.validate('Study for exam ');
       assert(!result.valid, 'Title with trailing space should fail');
     });
-
     test('Title: Double spaces fail', () => {
       const result = validators.title.validate('Study  for  exam');
       assert(!result.valid, 'Title with double spaces should fail');
     });
-
     test('Title: Empty string fails', () => {
       const result = validators.title.validate('');
       assert(!result.valid, 'Empty title should fail');
     });
 
+    // Date validation tests
     test('Date: Valid date passes (YYYY-MM-DD)', () => {
       const result = validators.date.validate('2025-10-15');
       assert(result.valid, 'Valid date should pass');
     });
-
     test('Date: Invalid format fails', () => {
       const result = validators.date.validate('15-10-2025');
       assert(!result.valid, 'Invalid date format should fail');
     });
-
     test('Date: Invalid date fails (Feb 30)', () => {
       const result = validators.date.validate('2025-02-30');
       assert(!result.valid, 'Invalid date (Feb 30) should fail');
     });
-
     test('Date: Invalid month fails', () => {
       const result = validators.date.validate('2025-13-01');
       assert(!result.valid, 'Invalid month should fail');
     });
 
+    // Duration validation tests
     test('Duration: Valid integer passes', () => {
       const result = validators.duration.validate('90');
       assert(result.valid, 'Valid duration should pass');
     });
-
     test('Duration: Valid decimal passes', () => {
       const result = validators.duration.validate('90.5');
       assert(result.valid, 'Valid decimal duration should pass');
     });
-
     test('Duration: Negative number fails', () => {
       const result = validators.duration.validate('-10');
       assert(!result.valid, 'Negative duration should fail');
     });
-
     test('Duration: Too many decimals fails', () => {
       const result = validators.duration.validate('90.555');
       assert(!result.valid, 'Duration with 3+ decimals should fail');
     });
-
     test('Duration: Over 1440 minutes fails', () => {
       const result = validators.duration.validate('1500');
       assert(!result.valid, 'Duration over 1440 should fail');
     });
 
+    // Tag validation tests
     test('Tag: Valid tag passes', () => {
       const result = validators.tag.validate('homework');
       assert(result.valid, 'Valid tag should pass');
     });
-
     test('Tag: Tag with spaces passes', () => {
       const result = validators.tag.validate('group project');
       assert(result.valid, 'Tag with space should pass');
     });
-
     test('Tag: Tag with hyphen passes', () => {
       const result = validators.tag.validate('mid-term');
       assert(result.valid, 'Tag with hyphen should pass');
     });
-
     test('Tag: Tag with numbers fails', () => {
       const result = validators.tag.validate('homework123');
       assert(!result.valid, 'Tag with numbers should fail');
     });
-
     test('Tag: Tag with special chars fails', () => {
       const result = validators.tag.validate('homework@work');
       assert(!result.valid, 'Tag with special chars should fail');
     });
 
+    // Duplicate words detection
     test('Duplicate Words: Detects duplicate words', () => {
       const result = validators.duplicateWords.validate('study study for exam');
       assert(!result.valid, 'Duplicate consecutive words should be detected');
     });
-
     test('Duplicate Words: No duplicates passes', () => {
       const result = validators.duplicateWords.validate('study hard for exam');
       assert(result.valid, 'No duplicates should pass');
     });
 
+    // Regex search tests
     test('Regex Search: Valid pattern compiles', () => {
       const result = testRegexPattern('study|homework');
       assert(result.valid, 'Valid regex should compile');
     });
-
     test('Regex Search: Invalid pattern fails', () => {
       const result = testRegexPattern('(unclosed');
       assert(!result.valid, 'Invalid regex should fail');
     });
-
     test('Regex Search: Lookahead pattern works', () => {
       const result = testRegexPattern('(?=.*exam)(?=.*math)');
       assert(result.valid, 'Lookahead pattern should compile');
     });
-
     test('Regex Search: Back-reference pattern works', () => {
       const result = testRegexPattern('\\b(\\w+)\\s+\\1\\b');
       assert(result.valid, 'Back-reference pattern should compile');
     });
 
+    // Highlight matches tests
     test('Highlight: Matches are highlighted', () => {
       const regex = /study/gi;
       const result = highlightMatches('I need to study for the exam', regex);
       assert(result.includes('<mark>'), 'Matches should be wrapped in <mark>');
     });
-
     test('Highlight: HTML is escaped', () => {
       const regex = /test/i;
-      const result = highlightMatches('<script>test</script>', regex);
+      const result = highlightMatches('<script>test<\/script>', regex);
       assert(result.includes('&lt;script&gt;'), 'HTML should be escaped');
     });
 
+    // Import validation tests
     test('Import Validation: Valid data passes', () => {
       const data = [{
         id: 'task_1',
@@ -285,7 +273,6 @@
       const result = validateImportData(data);
       assert(result.valid, 'Valid import data should pass');
     });
-
     test('Import Validation: Missing id fails', () => {
       const data = [{
         title: 'Test task',
@@ -298,7 +285,6 @@
       const result = validateImportData(data);
       assert(!result.valid, 'Missing id should fail');
     });
-
     test('Import Validation: Invalid duration fails', () => {
       const data = [{
         id: 'task_1',
@@ -312,12 +298,12 @@
       const result = validateImportData(data);
       assert(!result.valid, 'Negative duration should fail');
     });
-
     test('Import Validation: Non-array fails', () => {
       const result = validateImportData({ task: 'not an array' });
       assert(!result.valid, 'Non-array should fail');
     });
 
+    // Combined validation tests
     test('ValidateAll: All valid fields pass', () => {
       const data = {
         title: 'Study for exam',
@@ -329,7 +315,6 @@
       assert(result.valid, 'All valid fields should pass');
       assertEquals(Object.keys(result.errors).length, 0, 'No errors should exist');
     });
-
     test('ValidateAll: Multiple errors collected', () => {
       const data = {
         title: '  ',
@@ -344,6 +329,7 @@
 
     function renderResults() {
       const container = document.getElementById('test-results');
+      container.innerHTML = '';
       const passed = results.filter(r => r.pass).length;
       const failed = results.filter(r => !r.pass).length;
       const total = results.length;
@@ -384,11 +370,9 @@
 
       Object.entries(groups).forEach(([groupName, tests]) => {
         if (tests.length === 0) return;
-
         const groupDiv = document.createElement('div');
         groupDiv.className = 'test-group';
         groupDiv.innerHTML = `<h2>${groupName}</h2>`;
-
         tests.forEach(test => {
           const testDiv = document.createElement('div');
           testDiv.className = `test-case ${test.pass ? 'pass' : 'fail'}`;
@@ -398,7 +382,6 @@
           `;
           groupDiv.appendChild(testDiv);
         });
-
         container.appendChild(groupDiv);
       });
     }

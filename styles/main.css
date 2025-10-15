@@ -598,6 +598,18 @@ textarea.error:focus {
   opacity: 0;
 }
 
+.profile img {
+  width: 150px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10%;
+  border: 2px solid #a67c52;
+  box-shadow: 0 2px 8px rgba(76, 42, 25, 0.12);
+  display: block;
+  /* margin: 0 auto 5px auto; */
+  background: #f5e9da;
+}
+
 .about-content {
   line-height: 1.8;
 }
