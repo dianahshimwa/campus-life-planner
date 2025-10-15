@@ -1,0 +1,82 @@
+[
+  {
+    "id": "task_1728000000001",
+    "title": "Study for Math Exam",
+    "dueDate": "2025-10-15",
+    "duration": 120,
+    "tag": "study",
+    "notes": "Review chapters 5-8, focus on derivatives and integrals",
+    "createdAt": "2025-10-01T10:00:00.000Z",
+    "updatedAt": "2025-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "task_1728000000002",
+    "title": "Complete Programming Assignment",
+    "dueDate": "2025-10-12",
+    "duration": 180,
+    "tag": "homework",
+    "notes": "Implement binary search tree with insert, delete, and search operations",
+    "createdAt": "2025-10-02T14:30:00.000Z",
+    "updatedAt": "2025-10-02T14:30:00.000Z"
+  },
+  {
+    "id": "task_1728000000003",
+    "title": "Group Project Meeting",
+    "dueDate": "2025-10-10",
+    "duration": 90,
+    "tag": "project",
+    "notes": "Discuss database schema and API endpoints with team",
+    "createdAt": "2025-10-03T09:15:00.000Z",
+    "updatedAt": "2025-10-03T09:15:00.000Z"
+  },
+  {
+    "id": "task_1728000000004",
+    "title": "Chemistry Lab Report",
+    "dueDate": "2025-10-14",
+    "duration": 150,
+    "tag": "homework",
+    "notes": "Write up results from acid-base titration experiment",
+    "createdAt": "2025-10-04T11:00:00.000Z",
+    "updatedAt": "2025-10-04T11:00:00.000Z"
+  },
+  {
+    "id": "task_1728000000005",
+    "title": "Soccer Practice",
+    "dueDate": "2025-10-11",
+    "duration": 120,
+    "tag": "sports",
+    "notes": "Bring cleats and water bottle",
+    "createdAt": "2025-10-05T08:00:00.000Z",
+    "updatedAt": "2025-10-05T08:00:00.000Z"
+  },
+  {
+    "id": "task_1728000000006",
+    "title": "Review History Notes",
+    "dueDate": "2025-10-13",
+    "duration": 60,
+    "tag": "study",
+    "notes": "Prepare for quiz on World War II",
+    "createdAt": "2025-10-06T16:45:00.000Z",
+    "updatedAt": "2025-10-06T16:45:00.000Z"
+  },
+  {
+    "id": "task_1728000000007",
+    "title": "Club Meeting at 14:30",
+    "dueDate": "2025-10-09",
+    "duration": 60,
+    "tag": "club",
+    "notes": "Debate club discussing upcoming tournament",
+    "createdAt": "2025-10-07T07:30:00.000Z",
+    "updatedAt": "2025-10-07T07:30:00.000Z"
+  },
+  {
+    "id": "task_1728000000008",
+    "title": "Midterm Exam Preparation",
+    "dueDate": "2025-10-16",
+    "duration": 240,
+    "tag": "exam",
+    "notes": "Physics midterm covering mechanics and thermodynamics",
+    "createdAt": "2025-10-07T12:00:00.000Z",
+    "updatedAt": "2025-10-07T12:00:00.000Z"
+  }
+]
