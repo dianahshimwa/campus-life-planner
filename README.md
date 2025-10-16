@@ -1,4 +1,4 @@
-EduTra is an all-in-one campus life planner that is meant to help students stay organize and productive. 
+TrackrEdu is an all-in-one campus life planner that is meant to help students stay organize and productive. 
 
 This project tackles on the tasks tracking whereby;
 - There is a dashboard for displaying weekly activities and budgets of a student.
