@@ -1,5 +1,3 @@
-/* Revert to original light brown/cream theme, remove dark/light mode support */
-
 :root {
   --cream: #f8f3ed;
   --light-cream: #f5e9da;
