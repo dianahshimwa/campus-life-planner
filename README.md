@@ -20,3 +20,7 @@ I used JavaScript, HTML and CSS in this project;
 
  - There is also a data file (seed.json) that contains initial data like tasks that the application can load when it starts.
  - Lastly there is a separate HTML file/page (tests.html) that helps run tests for the application's fuctionality, ensuring everything works correctly.     
+
+ Here is deploy link and the demo video link:
+ 1. https://trackredu.vercel.app/
+ 2. https://youtu.be/Y7ay2W77IWk
